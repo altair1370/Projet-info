@@ -49,7 +49,7 @@ def decodage(text, n):
             
     return texte_decode
 
-#print(codage("hello world", 6))
+print(codage("hello world", 6))
 
 
 
