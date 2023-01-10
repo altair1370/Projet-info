@@ -19,19 +19,38 @@ def creationDuMasque():
 masque=creationDuMasque()
 
 #ouverture image
-im = Image.open("Airfrance.jpg")
+im = Image.open("test.jpg")
+im.show()
 
 #donnée sous une liste d'octets
 List_pixels = list(im.getdata())
-#len(List_pixels)
+len(List_pixels)
 
-#création de l'image cryptée
-Cryptage =[]
-j=0
-for i in range(len(List_pixels)):
-    Cryptage.append((List_pixels[i]+masque[j])%256)
-    j = j+1 %len(masque)
+#print(len(List_pixels))
 
+def cryptage(image,masque):#création de l'image cryptée
+    Cryptage =[]
+    j=0
+    for i in range(len(image)):
+        newp=(((image[i][0]+masque[j])%256),((image[i][1]+masque[j])%256),((image[i][2]+masque[j])%256))
+        Cryptage.append(newp)
+        j = (j+1)%len(masque)
+    return Cryptage
+imgcrp=cryptage(List_pixels,masque)
 imgcrypt=Image.new(im.mode,im.size)
-imgcrypt.putdata(Crypatge)
-imgcrypt.save("Ruisseaucrypte.jpg")
+imgcrypt.putdata(imgcrp)
+imgcrypt.show()
+#imgcrypt.save("Airfrancecrypte.jpg")
+
+def decryptage(image,masque):# création de l'image décryptée
+    Decryptage=[]
+    k=0
+    for i in range(len(image)):
+        decrypt=(((image[i][0]-masque[k])%256),((image[i][1]-masque[k])%256),((image[i][2]-masque[k])%256))
+        Decryptage.append(decrypt)
+        k = (k+1)%len(masque)
+    return Decryptage
+decrp= decryptage(imgcrp,masque)
+imgdecrypt=Image.new(im.mode,im.size)
+imgdecrypt.putdata(decrp)
+imgdecrypt.show()
